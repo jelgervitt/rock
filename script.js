@@ -7,6 +7,8 @@ const scoreboard = document.querySelector('#scoreboard');
 const pResult = document.createElement('p', 'id="result');
 const pWinner = document.createElement('p', 'id="winner');
 
+
+
 function computerPlay() {
     // pick a random number between 1 and 3
     let num = Math.floor(Math.random() * 3 + 1);
@@ -47,19 +49,29 @@ buttons.forEach((button) => {
         playerChoice = button.id;
         computerPlay();
         playRound(playerChoice, computerChoice);
-        // try to get all of the below in one or more separate functions
-        (result === "player") ? ++pTally : ++cTally;
-        pResult.textContent = "The current score: \n Player: " + pTally + 
-            "\n Computer: " + cTally;
-        scoreboard.appendChild(pResult);
-        if (pTally === 5) {
-            pWinner.textCont = "You have won the game!";
-            scoreboard.appendChild(pWinner);
-        } else if (cTally === 5) {
-            pWinner.textCont = "The computer has won the game!";
-            scoreboard.appendChild(pWinner);
-        }
-    })
+        scoreKeeper(result);
+        })
 })
+
+function scoreKeeper(result) {
+    (result === "player") ? ++pTally : ++cTally;
+    pResult.textContent = "Player: " + pTally + "  ---  " + "Computer: " + cTally;
+    scoreboard.appendChild(pResult);
+    if (pTally === 5) {
+        if (confirm("You have won the game! Play again?")) {
+            pTally = 0;
+            cTally = 0;
+            pResult.textContent = "Player: " + pTally + "  ---  " + "Computer: " + cTally;
+            scoreboard.appendChild(pResult);
+        };
+    } else if (cTally === 5) {
+        if (confirm("The computer has won the game!")) {
+            pTally = 0;
+            cTally = 0;
+            pResult.textContent = "Player: " + pTally + "  ---  " + "Computer: " + cTally;
+            scoreboard.appendChild(pResult);
+        };
+    }     ;  
+}
 
 
