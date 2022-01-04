@@ -1,9 +1,15 @@
-<script>
+let playerChoice;
+let computerChoice = "";
+let pTally = 0;
+let cTally = 0;
+const buttons = document.querySelectorAll('button');
+const scoreboard = document.querySelector('#scoreboard');
+const pResult = document.createElement('p', 'id="result');
+const pWinner = document.createElement('p', 'id="winner');
 
 function computerPlay() {
     // pick a random number between 1 and 3
     let num = Math.floor(Math.random() * 3 + 1);
-    let computerChoice;
     // now transpose the number to a weapon
     switch (num) {
         case 1: computerChoice = "rock" 
@@ -16,15 +22,13 @@ function computerPlay() {
     return computerChoice;
 };
 
-function playerSelection() {
-    let playerChoice = prompt("Enter your choice of paper, rock, or scissors");
-    playerChoice = playerChoice.toLowerCase();
-    return playerChoice;
-};
+// function playerSelection() {
+//     let playerChoice = prompt("Enter your choice of paper, rock, or scissors");
+//     playerChoice = playerChoice.toLowerCase();
+//     return playerChoice;
+// };
 
 function playRound(a, b) {
-    a = playerSelection();
-    b = computerPlay();
     if (a === b) {
     result = "draw"
     //decide on who wins
@@ -35,38 +39,27 @@ function playRound(a, b) {
     } else {
         (b === "paper") ? result = "player" : result = "computer";
     }
-  
-    // switch (result) {
-    //     case "draw" : message = "It's a tie, both you and the computer picked " +
-    //      a
-    //     break;
-    //     case "player" : message = "You win! Your " + a + 
-    //     " beats " + b + "."
-    //     break;
-    //     case "computer" : message = "You lose! The computer's " + b + 
-    //     " beats your " + a + "."
-    //     break;
-    // }
-
     return result;
 }
 
-function game() {
-    let pTally = 0;
-    let cTally = 0;
-    let drawTally = 0;
-    let message;
-    for (i = 0; i < 5; i++) {
-        playRound();
-        (result === "draw") ? ++drawTally : (result === "player") ?
-            ++pTally : ++cTally ;
-        console.log(result);
-    }
-    (drawTally >= pTally && drawTally >= cTally) ?
-        message = "It's a draw!" :
-        (pTally > cTally) ? message = "You win!" :
-        message = "You lose!";
-    console.log(message);
-}
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        playerChoice = button.id;
+        computerPlay();
+        playRound(playerChoice, computerChoice);
+        // try to get all of the below in one or more separate functions
+        (result === "player") ? ++pTally : ++cTally;
+        pResult.textContent = "The current score: \n Player: " + pTally + 
+            "\n Computer: " + cTally;
+        scoreboard.appendChild(pResult);
+        if (pTally === 5) {
+            pWinner.textCont = "You have won the game!";
+            scoreboard.appendChild(pWinner);
+        } else if (cTally === 5) {
+            pWinner.textCont = "The computer has won the game!";
+            scoreboard.appendChild(pWinner);
+        }
+    })
+})
 
-</script>
+
